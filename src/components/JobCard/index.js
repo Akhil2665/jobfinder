@@ -1,0 +1,39 @@
+import {Link} from 'react-router-dom'
+
+import './index.css'
+
+const JobCard = props => {
+  const {productData} = props
+  const {title, brand, imageUrl, rating, price, id} = productData
+  // const getProductDetails = () => {
+  //   console.log('getDetailsOfProduct(id)')
+  //   // return <ProductItemDetails id={id} />
+  // }
+
+  return (
+    //   Wrap with Link from react-router-dom
+    <Link to={`/products/${id}`} className="product-link">
+      <li className="product-item">
+        <button type="button">
+          <img src={imageUrl} alt={title} className="thumbnail" />
+        </button>
+        <h1 className="title">{title}</h1>
+        <p className="brand">by {brand}</p>
+        <div className="product-details">
+          <p className="price">Rs {price}/-</p>
+          <div className="rating-container">
+            <p className="rating">{rating}</p>
+
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/star-img.png"
+              alt="star"
+              className="star"
+            />
+          </div>
+        </div>
+      </li>
+    </Link>
+  )
+}
+
+export default JobCard
