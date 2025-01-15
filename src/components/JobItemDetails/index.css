@@ -1,0 +1,21 @@
+.skills-container {
+  display: flex;
+
+  flex-wrap: wrap;
+  width: 80%;
+}
+.company-image {
+  height: 100px;
+  width: 120px;
+}
+.life-at-comapny-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.similar-jobs-list {
+  list-style-type: none;
+}
+.job-details-success-view {
+  background-color: black;
+}

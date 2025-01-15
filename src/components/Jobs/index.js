@@ -1,69 +1,14 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
+import {BsSearch} from 'react-icons/bs'
 
 import FiltersGroup from '../FiltersGroup'
 import JobCard from '../JobCard'
+import ProfileCard from '../ProfileCard'
 import Header from '../Header'
 
 import './index.css'
-
-const categoryOptions = [
-  {
-    name: 'Clothing',
-    categoryId: '1',
-  },
-  {
-    name: 'Electronics',
-    categoryId: '2',
-  },
-  {
-    name: 'Appliances',
-    categoryId: '3',
-  },
-  {
-    name: 'Grocery',
-    categoryId: '4',
-  },
-  {
-    name: 'Toys',
-    categoryId: '5',
-  },
-]
-
-const sortbyOptions = [
-  {
-    optionId: 'PRICE_HIGH',
-    displayText: 'Price (High-Low)',
-  },
-  {
-    optionId: 'PRICE_LOW',
-    displayText: 'Price (Low-High)',
-  },
-]
-
-const ratingsList = [
-  {
-    ratingId: '4',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/rating-four-stars-img.png',
-  },
-  {
-    ratingId: '3',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/rating-three-stars-img.png',
-  },
-  {
-    ratingId: '2',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/rating-two-stars-img.png',
-  },
-  {
-    ratingId: '1',
-    imageUrl:
-      'https://assets.ccbp.in/frontend/react-js/rating-one-star-img.png',
-  },
-]
 
 const apiStatusConstants = {
   initial: 'INITIAL',
@@ -74,49 +19,64 @@ const apiStatusConstants = {
 
 class Jobs extends Component {
   state = {
-    productsList: [],
+    jobsList: [],
     apiStatus: apiStatusConstants.initial,
-    activeOptionId: sortbyOptions[0].optionId,
-    activeCategoryId: '',
+    activeJobType: '',
     searchInput: '',
-    activeRatingId: '',
+    activeSalaryRange: '',
+    profileDetails: {},
   }
 
   componentDidMount() {
-    this.getProducts()
+    this.getJobs()
+    console.log('mounted')
   }
 
-  getProducts = async () => {
+  getUpdatedProfileData = data => ({
+    name: data.name,
+    profileImageUrl: data.profile_image_url,
+    shortBio: data.short_bio,
+  })
+
+  getJobs = async () => {
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
     })
     const jwtToken = Cookies.get('jwt_token')
-    const {
-      activeOptionId,
-      activeCategoryId,
-      searchInput,
-      activeRatingId,
-    } = this.state
-    const apiUrl = `https://apis.ccbp.in/products?sort_by=${activeOptionId}&category=${activeCategoryId}&title_search=${searchInput}&rating=${activeRatingId}`
+    const {activeJobType, activeSalaryRange, searchInput} = this.state
+    const apiUrl = `https://apis.ccbp.in/jobs?employment_type=FULLTIME,PARTTIME&minimum_package=1000000&search=${searchInput}`
     const options = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
       },
       method: 'GET',
     }
+    const profileUrl = 'https://apis.ccbp.in/profile'
+
+    const profileResponse = await fetch(profileUrl, options)
     const response = await fetch(apiUrl, options)
+    if (profileResponse.ok) {
+      const fetchedProfileData = await profileResponse.json()
+      const updatedProfileData = this.getUpdatedProfileData(
+        fetchedProfileData.profile_details,
+      )
+      this.setState({profileDetails: updatedProfileData})
+    }
+
     if (response.ok) {
       const fetchedData = await response.json()
-      const updatedData = fetchedData.products.map(product => ({
-        title: product.title,
-        brand: product.brand,
-        price: product.price,
-        id: product.id,
-        imageUrl: product.image_url,
-        rating: product.rating,
+      const updatedData = fetchedData.jobs.map(jobObject => ({
+        companyLogoUrl: jobObject.company_logo_url,
+        employmentType: jobObject.employment_type,
+        jobDescription: jobObject.job_description,
+        id: jobObject.id,
+        title: jobObject.title,
+        rating: jobObject.rating,
+        location: jobObject.location,
+        packagePerAnnum: jobObject.package_per_annum,
       }))
       this.setState({
-        productsList: updatedData,
+        jobsList: updatedData,
         apiStatus: apiStatusConstants.success,
       })
     } else {
@@ -127,34 +87,26 @@ class Jobs extends Component {
   }
 
   changeSortby = activeOptionId => {
-    this.setState({activeOptionId}, this.getProducts)
+    this.setState({activeOptionId}, this.getJobs)
   }
 
   clearFilters = () => {
     this.setState(
       {
         searchInput: '',
-        activeCategoryId: '',
-        activeRatingId: '',
+        activeJobType: '',
+        activeSalaryRange: '',
       },
-      this.getProducts,
+      this.getJobs,
     )
   }
 
   changeRating = activeRatingId => {
-    this.setState({activeRatingId}, this.getProducts)
+    this.setState({activeRatingId}, this.getJobs)
   }
 
   changeCategory = activeCategoryId => {
-    this.setState({activeCategoryId}, this.getProducts)
-  }
-
-  enterSearchInput = () => {
-    this.getProducts()
-  }
-
-  changeSearchInput = searchInput => {
-    this.setState({searchInput})
+    this.setState({activeCategoryId}, this.getJobs)
   }
 
   renderFailureView = () => (
@@ -173,36 +125,36 @@ class Jobs extends Component {
     </div>
   )
 
-  getDetailsOfProduct = id => {
+  getDetailsOfJob = id => {
     console.log('successs', id)
   }
 
   renderJobsListView = () => {
-    const {productsList, activeOptionId} = this.state
-    const shouldShowProductsList = productsList.length > 0
+    const {jobsList} = this.state
+    const shouldShowJobsList = jobsList.length > 0
 
-    return shouldShowProductsList ? (
+    return shouldShowJobsList ? (
       <div className="all-products-container">
-        <ul className="products-list">
-          {productsList.map(product => (
+        <ul className="jobs-list">
+          {jobsList.map(jobObject => (
             <JobCard
-              productData={product}
-              getDetailsOfProduct={this.getDetailsOfProduct}
-              key={product.id}
+              jobData={jobObject}
+              getDetailsOfJob={this.getDetailsOfJob}
+              key={jobObject.id}
             />
           ))}
         </ul>
       </div>
     ) : (
-      <div className="no-products-view">
+      <div className="no-jobs-view">
         <img
-          src="https://assets.ccbp.in/frontend/react-js/nxt-trendz/nxt-trendz-no-products-view.png"
-          className="no-products-img"
-          alt="no products"
+          src="https://assets.ccbp.in/frontend/react-js/no-jobs-img.png"
+          className="no-jobs-img"
+          alt="no jobs"
         />
-        <h1 className="no-products-heading">No Products Found</h1>
+        <h1 className="no-jobs-heading">No Jobs Found</h1>
         <p className="no-products-description">
-          We could not find any products. Try other filters.
+          We could not find any Jobs. Try other filters.
         </p>
       </div>
     )
@@ -214,7 +166,7 @@ class Jobs extends Component {
     </div>
   )
 
-  renderAllProducts = () => {
+  renderAllJobs = () => {
     const {apiStatus} = this.state
 
     switch (apiStatus) {
@@ -229,25 +181,59 @@ class Jobs extends Component {
     }
   }
 
-  render() {
-    const {activeCategoryId, searchInput, activeRatingId} = this.state
+  onchangeSearchInput = event => {
+    const searchInputValue = event.target.value
+    this.setState({searchInput: searchInputValue})
+  }
 
+  // onChange={this.onchangeSearchInput}
+
+  renderInputSearchElement = () => {
+    const {searchInput} = this.state
+    const {employmentTypesList, salaryRangesList} = this.props
+    console.log(employmentTypesList, salaryRangesList)
     return (
-      <div className="all-products-section">
-        <Header />
-        <FiltersGroup
-          searchInput={searchInput}
-          categoryOptions={categoryOptions}
-          ratingsList={ratingsList}
-          changeSearchInput={this.changeSearchInput}
-          enterSearchInput={this.enterSearchInput}
-          activeCategoryId={activeCategoryId}
-          activeRatingId={activeRatingId}
-          changeCategory={this.changeCategory}
-          changeRating={this.changeRating}
-          clearFilters={this.clearFilters}
+      <div className="input-container">
+        <input
+          className="input-search-element"
+          placeholder="Search"
+          type="search"
+          value={searchInput}
+          onChange={this.onchangeSearchInput}
         />
-        {this.renderAllProducts()}
+        <button
+          type="button"
+          data-testid="searchButton"
+          className="search-button"
+          onClick={this.getJobs}
+        >
+          <BsSearch className="search-icon" />
+        </button>
+      </div>
+    )
+  }
+
+  renderSidebar = () => {
+    const {profileDetails} = this.state
+    return (
+      <>
+        <ProfileCard profileDetails={profileDetails} />
+        <FiltersGroup />
+      </>
+    )
+  }
+
+  render() {
+    return (
+      <div className="all-jobs-section">
+        <Header />
+        <div className="jobs-main-container">
+          <div className="app-side-bar">{this.renderSidebar()}</div>
+          <div className="job-content-container">
+            {this.renderInputSearchElement()}
+            {this.renderAllJobs()}
+          </div>
+        </div>
       </div>
     )
   }

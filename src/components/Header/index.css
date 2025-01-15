@@ -4,6 +4,7 @@
   justify-content: center;
   color: #ffffff;
   border-bottom: 1px solid rgb(243, 243, 243);
+  height: 24vh;
 }
 
 @media screen and (max-width: 768px) {

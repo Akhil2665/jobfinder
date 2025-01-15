@@ -22,7 +22,7 @@ const Home = () => {
           Millions of people searching for jobs, salary information, company
           reviews, find the job that fits your abilites and potential
         </p>
-        <Link to="/products">
+        <Link to="/jobs">
           <button type="button" className="shop-now-button">
             Find Job
           </button>

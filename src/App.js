@@ -3,6 +3,8 @@ import {Route, Switch, Redirect} from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 import Home from './components/Home'
 import Jobs from './components/Jobs'
+import JobItemDetails from './components/JobItemDetails'
+
 // import ProductItemDetails from './components/ProductItemDetails'
 
 import NotFound from './components/NotFound'
@@ -51,23 +53,16 @@ const salaryRangesList = [
 
 const App = () => (
   <Switch>
-    <Route
-      exact
-      path="/login"
-      props={(employmentTypesList, salaryRangesList)}
-      component={LoginForm}
-    />
+    <Route exact path="/login" component={LoginForm} />
     <ProtectedRoute exact path="/" component={Home} />
     <ProtectedRoute
       exact
       path="/jobs"
-      element={
-        <Jobs
-          employmentTypesList={employmentTypesList}
-          salaryRangesList={salaryRangesList}
-        />
-      }
+      component={Jobs}
+      salaryRangesList={salaryRangesList}
+      employmentTypesList={employmentTypesList}
     />
+    <ProtectedRoute exact path="/jobs/:id" component={JobItemDetails} />
 
     <Route path="/not-found" component={NotFound} />
     <Redirect to="not-found" />

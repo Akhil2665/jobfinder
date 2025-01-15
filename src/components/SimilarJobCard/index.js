@@ -5,8 +5,8 @@ import {MdWork} from 'react-icons/md'
 
 import './index.css'
 
-const JobCard = props => {
-  const {jobData} = props
+const SimilarJobCard = props => {
+  const {jobDetails} = props
   const {
     title,
     companyLogoUrl,
@@ -16,7 +16,7 @@ const JobCard = props => {
     employmentType,
     packagePerAnnum,
     jobDescription,
-  } = jobData
+  } = jobDetails
 
   return (
     //   Wrap with Link from react-router-dom
@@ -60,4 +60,4 @@ const JobCard = props => {
   )
 }
 
-export default JobCard
+export default SimilarJobCard
