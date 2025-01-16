@@ -1,0 +1,11 @@
+.filter-input {
+  height: 20px;
+  width: 20px;
+  margin-right: 6px;
+}
+.each-list-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}

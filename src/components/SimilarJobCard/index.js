@@ -14,14 +14,13 @@ const SimilarJobCard = props => {
     id,
     location,
     employmentType,
-    packagePerAnnum,
     jobDescription,
   } = jobDetails
 
   return (
     //   Wrap with Link from react-router-dom
     <Link to={`/jobs/${id}`} className="job-link">
-      <li className="job-item" key={id}>
+      <li className="similar-job-item-card" key={id}>
         <div className="card-role-container">
           <img
             src={companyLogoUrl}
@@ -36,24 +35,20 @@ const SimilarJobCard = props => {
             </div>
           </div>
         </div>
-        <div className="work-type-container">
-          <div className="left-container">
-            <div className="icon-and-detail">
-              <IoLocationOutline />
-              <p className="work-about">{location}</p>
-            </div>
-            <div className="icon-and-detail">
-              <MdWork />
-              <p className="work-about">{employmentType}</p>
-            </div>
-          </div>
-          <div>
-            <p className="package">{packagePerAnnum}</p>
-          </div>
-        </div>
         <div className="description-container">
           <h3 className="description-heading">Description</h3>
           <p className="job-description">{jobDescription}</p>
+        </div>
+
+        <div className="similar-job-work-type-container">
+          <div className="icon-and-detail">
+            <IoLocationOutline />
+            <p className="work-about">{location}</p>
+          </div>
+          <div className="icon-and-detail">
+            <MdWork />
+            <p className="work-about">{employmentType}</p>
+          </div>
         </div>
       </li>
     </Link>

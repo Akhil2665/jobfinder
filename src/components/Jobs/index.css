@@ -17,7 +17,7 @@
 .job-content-container {
   width: 65%;
 }
-.input-container {
+.search-input-container {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -25,20 +25,23 @@
   outline: none;
   height: 40px;
   width: 480px;
+  border-radius: 10px;
 }
 .input-search-element {
-  background-color: antiquewhite;
+  background-color: transparent;
   border: none;
   outline: none;
   height: 40px;
   padding-left: 20px;
-  width: 90%;
+  width: 80%;
 }
 .search-button {
   background-color: #475569;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   border: none;
   outline: none;
-  height: 40px;
+  height: 38px;
   width: 20%;
 }
 .search-button:hover {

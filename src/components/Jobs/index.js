@@ -3,7 +3,9 @@ import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 import {BsSearch} from 'react-icons/bs'
 
-import FiltersGroup from '../FiltersGroup'
+import EmploymentTypeFilter from '../EmploymentTypeFilter'
+import SalaryFilterItem from '../SalaryFilterItem'
+
 import JobCard from '../JobCard'
 import ProfileCard from '../ProfileCard'
 import Header from '../Header'
@@ -21,15 +23,15 @@ class Jobs extends Component {
   state = {
     jobsList: [],
     apiStatus: apiStatusConstants.initial,
-    activeJobType: '',
+    activeJobType: [],
     searchInput: '',
-    activeSalaryRange: '',
+    activeSalaryRange: [],
     profileDetails: {},
   }
 
   componentDidMount() {
     this.getJobs()
-    console.log('mounted')
+    console.log(this.props)
   }
 
   getUpdatedProfileData = data => ({
@@ -84,29 +86,6 @@ class Jobs extends Component {
         apiStatus: apiStatusConstants.failure,
       })
     }
-  }
-
-  changeSortby = activeOptionId => {
-    this.setState({activeOptionId}, this.getJobs)
-  }
-
-  clearFilters = () => {
-    this.setState(
-      {
-        searchInput: '',
-        activeJobType: '',
-        activeSalaryRange: '',
-      },
-      this.getJobs,
-    )
-  }
-
-  changeRating = activeRatingId => {
-    this.setState({activeRatingId}, this.getJobs)
-  }
-
-  changeCategory = activeCategoryId => {
-    this.setState({activeCategoryId}, this.getJobs)
   }
 
   renderFailureView = () => (
@@ -193,7 +172,7 @@ class Jobs extends Component {
     const {employmentTypesList, salaryRangesList} = this.props
     console.log(employmentTypesList, salaryRangesList)
     return (
-      <div className="input-container">
+      <div className="search-input-container">
         <input
           className="input-search-element"
           placeholder="Search"
@@ -213,17 +192,84 @@ class Jobs extends Component {
     )
   }
 
+  changeActiveJobType = selectedType => {
+    const {activeJobType} = this.state
+    const updatedJobTypeList = activeJobType.includes(selectedType)
+      ? null
+      : [...activeJobType, selectedType]
+    if (!activeJobType.includes(selectedType)) {
+      this.setState({activeJobType: updatedJobTypeList}, this.getJobs)
+    }
+    // this.setState(prevState => {
+    //   activeJobType: if (!prevState.activeJobType.includes(selectedType)) {
+    //     return [...prevState.activeJobType, selectedType]
+    //   }
+    //   return null
+    // }, this.getJobs)
+  }
+
+  onChangeSalaryList = selectedRange => {
+    const {activeSalaryRange} = this.state
+    const updatedactiveSalaryRange = activeSalaryRange.includes(selectedRange)
+      ? null
+      : [...activeSalaryRange, selectedRange]
+    if (!activeSalaryRange.includes(selectedRange)) {
+      this.setState({activeJobType: updatedactiveSalaryRange}, this.getJobs)
+    }
+    // this.setState(prevState => {
+    //   if (!prevState.activeSalaryRange.includes(selectedRange)) {
+    //     return [...prevState.activeSalaryRange, selectedRange]
+    //   }
+    // }, this.getJobs)
+  }
+
+  renderFilterGroup = () => {
+    const {employmentTypesList, salaryRangesList} = this.props
+
+    return (
+      <div className="filter-group">
+        <div className="filter-type-container">
+          <h1 className="filter-heading">Type Of Employment</h1>
+          <ul className="filter-list-container">
+            {employmentTypesList.map(eachType => (
+              <EmploymentTypeFilter
+                employmentTypeDetails={eachType}
+                key={eachType.employmentTypeId}
+                changeActiveJobType={this.changeActiveJobType}
+              />
+            ))}
+          </ul>
+        </div>
+        <div className="filter-type-container">
+          <h1 className="filter-heading">Salary Range</h1>
+          <ul className="filter-list-container">
+            {salaryRangesList.map(eachRange => (
+              <SalaryFilterItem
+                salaryRangeDetails={eachRange}
+                key={eachRange.salaryRangeId}
+                onChangeSalaryList={this.onChangeSalaryList}
+              />
+            ))}
+          </ul>
+        </div>
+      </div>
+    )
+  }
+
   renderSidebar = () => {
     const {profileDetails} = this.state
+
     return (
       <>
         <ProfileCard profileDetails={profileDetails} />
-        <FiltersGroup />
+        {this.renderFilterGroup()}
       </>
     )
   }
 
   render() {
+    const {salaryRangesList, employmentTypesList} = this.state
+    console.log(salaryRangesList, employmentTypesList)
     return (
       <div className="all-jobs-section">
         <Header />

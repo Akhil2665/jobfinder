@@ -5,8 +5,8 @@
   width: 80%;
 }
 .company-image {
-  height: 100px;
-  width: 120px;
+  height: 300px;
+  width: 400px;
 }
 .life-at-comapny-container {
   display: flex;
@@ -15,7 +15,29 @@
 }
 .similar-jobs-list {
   list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
 }
 .job-details-success-view {
   background-color: black;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.job-item-details-card {
+  min-height: 900px;
+  width: 90%;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  padding: 24px;
+  background-color: #475569;
+  outline: none;
+  border-radius: 12px;
+}
+.description-company-life {
+  font-size: 28px;
+  width: 60%;
 }

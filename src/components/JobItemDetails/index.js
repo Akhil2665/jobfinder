@@ -142,8 +142,8 @@ class JobItemDetails extends Component {
       <div>
         <h1 className="description-heading">Lif At Company</h1>
         <div className="life-at-comapny-container">
-          <p className="description">{description}</p>
-          <img src={imageUrl} className="company-image" alt="company" />
+          <p className="description-company-life">{description}</p>
+          <img src={imageUrl} className="company-image" alt="life at company" />
         </div>
       </div>
     )
@@ -165,7 +165,7 @@ class JobItemDetails extends Component {
 
     return (
       <div className="job-details-success-view">
-        <div className="job-item">
+        <div className="job-item-details-card">
           <div className="card-role-container">
             <img
               src={companyLogoUrl}

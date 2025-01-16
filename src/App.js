@@ -58,9 +58,13 @@ const App = () => (
     <ProtectedRoute
       exact
       path="/jobs"
-      component={Jobs}
-      salaryRangesList={salaryRangesList}
-      employmentTypesList={employmentTypesList}
+      render={props => (
+        <Jobs
+          {...props}
+          salaryRangesList={salaryRangesList}
+          employmentTypesList={employmentTypesList}
+        />
+      )}
     />
     <ProtectedRoute exact path="/jobs/:id" component={JobItemDetails} />
 

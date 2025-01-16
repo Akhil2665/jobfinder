@@ -22,7 +22,7 @@
   padding: 40px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -41,14 +41,14 @@
 .login-form-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
 
   padding: 20px;
   border-radius: 8px;
   width: 100%;
   max-width: 350px;
-  background-color: whitesmoke;
+  background-color: #2c364c;
 }
 
 @media screen and (min-width: 992px) {
@@ -73,7 +73,7 @@
   font-weight: bold;
   font-size: 12px;
   line-height: 16px;
-  color: #475569;
+  color: #f8fafc;
 }
 
 .input-element {
@@ -81,7 +81,7 @@
   height: 40px;
   border: 1px solid #d7dfe9;
   background-color: #e2e8f0;
-  color: #64748b;
+  color: #272727;
   border-radius: 2px;
   margin-top: 5px;
   padding: 8px 16px 8px 16px;
