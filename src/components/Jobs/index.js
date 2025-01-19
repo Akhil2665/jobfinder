@@ -25,7 +25,7 @@ class Jobs extends Component {
     apiStatus: apiStatusConstants.initial,
     activeJobType: [],
     searchInput: '',
-    activeSalaryRange: [],
+    activeSalaryRange: '',
     profileDetails: {},
   }
 
@@ -46,7 +46,9 @@ class Jobs extends Component {
     })
     const jwtToken = Cookies.get('jwt_token')
     const {activeJobType, activeSalaryRange, searchInput} = this.state
-    const apiUrl = `https://apis.ccbp.in/jobs?employment_type=FULLTIME,PARTTIME&minimum_package=1000000&search=${searchInput}`
+    const apiUrl = `https://apis.ccbp.in/jobs?employment_type=${activeJobType.join(
+      ',',
+    )}&minimum_package=${activeSalaryRange}&search=${searchInput}`
     const options = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
@@ -92,14 +94,14 @@ class Jobs extends Component {
     <div className="products-error-view-container">
       <img
         src="https://assets.ccbp.in/frontend/react-js/nxt-trendz/nxt-trendz-products-error-view.png"
-        alt="products failure"
+        alt="failure view"
         className="products-failure-img"
       />
       <h1 className="product-failure-heading-text">
         Oops! Something Went Wrong
       </h1>
       <p className="products-failure-description">
-        We are having some trouble processing your request. Please try again.
+        We cannot seem to find the page you are looking for
       </p>
     </div>
   )
@@ -140,7 +142,7 @@ class Jobs extends Component {
   }
 
   renderLoadingView = () => (
-    <div className="products-loader-container">
+    <div className="products-loader-container" data-testid="loader">
       <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
     </div>
   )
@@ -194,33 +196,20 @@ class Jobs extends Component {
 
   changeActiveJobType = selectedType => {
     const {activeJobType} = this.state
-    const updatedJobTypeList = activeJobType.includes(selectedType)
-      ? null
-      : [...activeJobType, selectedType]
+
     if (!activeJobType.includes(selectedType)) {
+      const updatedJobTypeList = [...activeJobType, selectedType]
       this.setState({activeJobType: updatedJobTypeList}, this.getJobs)
+    } else {
+      const removedJobTypeList = activeJobType.filter(
+        eachType => eachType !== selectedType,
+      )
+      this.setState({activeJobType: removedJobTypeList}, this.getJobs)
     }
-    // this.setState(prevState => {
-    //   activeJobType: if (!prevState.activeJobType.includes(selectedType)) {
-    //     return [...prevState.activeJobType, selectedType]
-    //   }
-    //   return null
-    // }, this.getJobs)
   }
 
   onChangeSalaryList = selectedRange => {
-    const {activeSalaryRange} = this.state
-    const updatedactiveSalaryRange = activeSalaryRange.includes(selectedRange)
-      ? null
-      : [...activeSalaryRange, selectedRange]
-    if (!activeSalaryRange.includes(selectedRange)) {
-      this.setState({activeJobType: updatedactiveSalaryRange}, this.getJobs)
-    }
-    // this.setState(prevState => {
-    //   if (!prevState.activeSalaryRange.includes(selectedRange)) {
-    //     return [...prevState.activeSalaryRange, selectedRange]
-    //   }
-    // }, this.getJobs)
+    this.setState({activeSalaryRange: selectedRange}, this.getJobs)
   }
 
   renderFilterGroup = () => {
@@ -268,8 +257,6 @@ class Jobs extends Component {
   }
 
   render() {
-    const {salaryRangesList, employmentTypesList} = this.state
-    console.log(salaryRangesList, employmentTypesList)
     return (
       <div className="all-jobs-section">
         <Header />

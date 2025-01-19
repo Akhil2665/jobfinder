@@ -19,12 +19,12 @@ const Home = () => {
         <h1 className="home-heading">Find The Job That Fits Your Life</h1>
 
         <p className="home-description">
-          Millions of people searching for jobs, salary information, company
+          Millions of people are searching for jobs, salary information, company
           reviews, find the job that fits your abilites and potential
         </p>
         <Link to="/jobs">
           <button type="button" className="shop-now-button">
-            Find Job
+            Find Jobs
           </button>
         </Link>
       </div>

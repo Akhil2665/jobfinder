@@ -3,7 +3,9 @@ import './index.css'
 const EmploymentTypeFilter = props => {
   const {employmentTypeDetails, changeActiveJobType} = props
   const {employmentTypeId, label} = employmentTypeDetails
-  const updateEmploymentType = changeActiveJobType(employmentTypeId)
+  const updateEmploymentType = () => {
+    changeActiveJobType(employmentTypeId)
+  }
   return (
     <li className="each-list-item">
       <input
@@ -11,6 +13,7 @@ const EmploymentTypeFilter = props => {
         type="checkbox"
         onClick={updateEmploymentType}
         id={employmentTypeId}
+        value={employmentTypeId}
       />
       <label className="input-label-filter" htmlFor={employmentTypeId}>
         {label}

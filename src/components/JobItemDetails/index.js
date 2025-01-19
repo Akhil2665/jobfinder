@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import Cookies from 'js-cookie'
 
 import Loader from 'react-loader-spinner'
-import {FaStar} from 'react-icons/fa'
+import {FaStar, FaShareSquare} from 'react-icons/fa'
 import {IoLocationOutline} from 'react-icons/io5'
 import {MdWork} from 'react-icons/md'
 import SimilarJobCard from '../SimilarJobCard'
@@ -38,6 +38,7 @@ class JobItemDetails extends Component {
   getFormattedData = data => ({
     companyLogoUrl: data.company_logo_url,
     employmentType: data.employment_type,
+    companyWebsiteUrl: data.company_website_url,
     jobDescription: data.job_description,
     id: data.id,
     title: data.title,
@@ -126,11 +127,11 @@ class JobItemDetails extends Component {
     return (
       <div>
         <h1 className="description-heading">Skills</h1>
-        <div className="skills-container">
+        <ul className="skills-container">
           {skillData.map(eachSkill => (
-            <SkillCard skillDetails={eachSkill} />
+            <SkillCard skillDetails={eachSkill} key={eachSkill.name} />
           ))}
-        </div>
+        </ul>
       </div>
     )
   }
@@ -140,7 +141,7 @@ class JobItemDetails extends Component {
     const {imageUrl, description} = lifeAtCompanydata
     return (
       <div>
-        <h1 className="description-heading">Lif At Company</h1>
+        <h1 className="description-heading">Life At Company</h1>
         <div className="life-at-comapny-container">
           <p className="description-company-life">{description}</p>
           <img src={imageUrl} className="company-image" alt="life at company" />
@@ -160,7 +161,7 @@ class JobItemDetails extends Component {
       employmentType,
       packagePerAnnum,
       jobDescription,
-      totalReviews,
+      companyWebsiteUrl,
     } = jobData
 
     return (
@@ -196,7 +197,18 @@ class JobItemDetails extends Component {
             </div>
           </div>
           <div className="description-container">
-            <h3 className="description-heading">Description</h3>
+            <div className="description-link-container">
+              <h3 className="description-heading">Description</h3>
+              <a
+                className="link"
+                href={companyWebsiteUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Visit
+                <FaShareSquare />
+              </a>
+            </div>
             <p className="job-description">{jobDescription}</p>
           </div>
           {this.renderSkillContainer()}

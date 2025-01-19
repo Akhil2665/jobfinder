@@ -74,5 +74,3 @@ const App = () => (
 )
 
 export default App
-
-// <ProtectedRoute exact path="/jobs/:id" component={JobItemDetails} />
