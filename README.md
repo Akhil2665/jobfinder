@@ -1,4 +1,6 @@
 In this project, let's build a **Jobby App** by applying the concepts we have learned till now.
+// These are the lists used in the application. You can move them to any component needed.//
+//failure view not getting error loader is keep loading...//
 
 ### Refer to videos below:
 

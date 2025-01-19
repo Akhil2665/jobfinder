@@ -24,15 +24,15 @@ const apiStatusConstants = {
 class JobItemDetails extends Component {
   state = {
     jobData: {},
-    similarJobssData: [],
+
     skillData: {},
     lifeAtCompanydata: {},
     apiStatus: apiStatusConstants.initial,
-    quantity: 1,
+    similarJobssData: [],
   }
 
   componentDidMount() {
-    this.getProductData()
+    this.getJobData()
   }
 
   getFormattedData = data => ({
@@ -52,7 +52,7 @@ class JobItemDetails extends Component {
     description: data.description,
   })
 
-  getProductData = async () => {
+  getJobData = async () => {
     const {match} = this.props
     const {params} = match
     const {id} = params
@@ -68,10 +68,12 @@ class JobItemDetails extends Component {
       },
       method: 'GET',
     }
+
     const response = await fetch(apiUrl, options)
+
     if (response.ok) {
       const fetchedData = await response.json()
-      console.log(fetchedData.job_details.life_at_company)
+
       const updatedSkillData = fetchedData.job_details.skills.map(eachObj => ({
         imageUrl: eachObj.image_url,
         name: eachObj.name,
@@ -108,14 +110,15 @@ class JobItemDetails extends Component {
   renderFailureView = () => (
     <div className="job-details-error-view-container">
       <img
-        alt="error view"
-        src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-error-view-img.png"
+        alt="failure view"
+        src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
         className="error-view-image"
       />
-      <h1 className="job-not-found-heading">Product Not Found</h1>
+      <h1 className="job-not-found-heading">Oops! Something Went Wrong</h1>
+      <p>We cannot seem to find the page you are looking for.</p>
       <Link to="/jobs">
         <button type="button" className="button">
-          Continue Shopping
+          Retry
         </button>
       </Link>
     </div>
@@ -156,7 +159,6 @@ class JobItemDetails extends Component {
       title,
       companyLogoUrl,
       rating,
-      id,
       location,
       employmentType,
       packagePerAnnum,

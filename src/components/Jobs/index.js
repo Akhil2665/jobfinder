@@ -1,4 +1,5 @@
 import {Component} from 'react'
+import {Link} from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 import {BsSearch} from 'react-icons/bs'
@@ -31,7 +32,6 @@ class Jobs extends Component {
 
   componentDidMount() {
     this.getJobs()
-    console.log(this.props)
   }
 
   getUpdatedProfileData = data => ({
@@ -59,6 +59,7 @@ class Jobs extends Component {
 
     const profileResponse = await fetch(profileUrl, options)
     const response = await fetch(apiUrl, options)
+    console.log(response)
     if (profileResponse.ok) {
       const fetchedProfileData = await profileResponse.json()
       const updatedProfileData = this.getUpdatedProfileData(
@@ -93,7 +94,7 @@ class Jobs extends Component {
   renderFailureView = () => (
     <div className="products-error-view-container">
       <img
-        src="https://assets.ccbp.in/frontend/react-js/nxt-trendz/nxt-trendz-products-error-view.png"
+        src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
         alt="failure view"
         className="products-failure-img"
       />
@@ -103,12 +104,13 @@ class Jobs extends Component {
       <p className="products-failure-description">
         We cannot seem to find the page you are looking for
       </p>
+      <Link to="/jobs">
+        <button type="button" className="button">
+          Retry
+        </button>
+      </Link>
     </div>
   )
-
-  getDetailsOfJob = id => {
-    console.log('successs', id)
-  }
 
   renderJobsListView = () => {
     const {jobsList} = this.state
@@ -118,11 +120,7 @@ class Jobs extends Component {
       <div className="all-products-container">
         <ul className="jobs-list">
           {jobsList.map(jobObject => (
-            <JobCard
-              jobData={jobObject}
-              getDetailsOfJob={this.getDetailsOfJob}
-              key={jobObject.id}
-            />
+            <JobCard jobData={jobObject} key={jobObject.id} />
           ))}
         </ul>
       </div>
@@ -171,8 +169,7 @@ class Jobs extends Component {
 
   renderInputSearchElement = () => {
     const {searchInput} = this.state
-    const {employmentTypesList, salaryRangesList} = this.props
-    console.log(employmentTypesList, salaryRangesList)
+
     return (
       <div className="search-input-container">
         <input
@@ -245,9 +242,39 @@ class Jobs extends Component {
     )
   }
 
-  renderSidebar = () => {
+  renderProfileView = () => {
     const {profileDetails} = this.state
 
+    return <ProfileCard profileDetails={profileDetails} />
+  }
+
+  renderProfileFailureView = () => (
+    <div className="profile-failure-view-container">
+      <Link to="/jobs">
+        <button type="button" className="button">
+          Retry
+        </button>
+      </Link>
+    </div>
+  )
+
+  renderProfileCard = () => {
+    const {apiStatus} = this.state
+
+    switch (apiStatus) {
+      case apiStatusConstants.success:
+        return this.renderProfileView()
+      case apiStatusConstants.failure:
+        return this.renderProfileFailureView()
+      case apiStatusConstants.inProgress:
+        return this.renderLoadingView()
+      default:
+        return null
+    }
+  }
+
+  renderSidebar = () => {
+    const {profileDetails} = this.state
     return (
       <>
         <ProfileCard profileDetails={profileDetails} />
