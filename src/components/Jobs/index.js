@@ -20,6 +20,13 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
 }
 
+const profileApiStatusConstants = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
+  inProgress: 'IN_PROGRESS',
+}
+
 class Jobs extends Component {
   state = {
     jobsList: [],
@@ -28,6 +35,7 @@ class Jobs extends Component {
     searchInput: '',
     activeSalaryRange: '',
     profileDetails: {},
+    profileApiStatus: profileApiStatusConstants.initial,
   }
 
   componentDidMount() {
@@ -43,6 +51,7 @@ class Jobs extends Component {
   getJobs = async () => {
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
+      profileApiStatus: profileApiStatusConstants.inProgress,
     })
     const jwtToken = Cookies.get('jwt_token')
     const {activeJobType, activeSalaryRange, searchInput} = this.state
@@ -59,13 +68,21 @@ class Jobs extends Component {
 
     const profileResponse = await fetch(profileUrl, options)
     const response = await fetch(apiUrl, options)
-    console.log(response)
-    if (profileResponse.ok) {
+
+    if (!profileResponse.ok) {
       const fetchedProfileData = await profileResponse.json()
       const updatedProfileData = this.getUpdatedProfileData(
         fetchedProfileData.profile_details,
       )
-      this.setState({profileDetails: updatedProfileData})
+      this.setState({
+        profileDetails: updatedProfileData,
+        profileApiStatus: profileApiStatusConstants.success,
+      })
+    } else {
+      this.setState({
+        profileDetails: {},
+        profileApiStatus: profileApiStatusConstants.failure,
+      })
     }
 
     if (response.ok) {
@@ -105,7 +122,7 @@ class Jobs extends Component {
         We cannot seem to find the page you are looking for
       </p>
       <Link to="/jobs">
-        <button type="button" className="button">
+        <button type="button" className="retry-button" data-testid="retry">
           Retry
         </button>
       </Link>
@@ -250,8 +267,9 @@ class Jobs extends Component {
 
   renderProfileFailureView = () => (
     <div className="profile-failure-view-container">
+      renderProfileFailureView not displaying
       <Link to="/jobs">
-        <button type="button" className="button">
+        <button type="button" className="retry-button" data-testid="retry">
           Retry
         </button>
       </Link>
@@ -259,14 +277,14 @@ class Jobs extends Component {
   )
 
   renderProfileCard = () => {
-    const {apiStatus} = this.state
-
-    switch (apiStatus) {
-      case apiStatusConstants.success:
+    const {profileApiStatus} = this.state
+    console.log(profileApiStatus)
+    switch (profileApiStatus) {
+      case profileApiStatusConstants.success:
         return this.renderProfileView()
-      case apiStatusConstants.failure:
+      case profileApiStatusConstants.failure:
         return this.renderProfileFailureView()
-      case apiStatusConstants.inProgress:
+      case profileApiStatusConstants.inProgress:
         return this.renderLoadingView()
       default:
         return null

@@ -1,5 +1,8 @@
 import {Link, withRouter} from 'react-router-dom'
 
+import {AiFillHome} from 'react-icons/ai'
+import {BsFillBriefcaseFill} from 'react-icons/bs'
+
 import Cookies from 'js-cookie'
 
 import './index.css'
@@ -22,12 +25,15 @@ const Header = props => {
               alt="website logo"
             />
           </Link>
-          <button type="button" className="nav-mobile-btn">
+          <button
+            type="button"
+            className="nav-mobile-btn"
+            onClick={onClickLogout}
+          >
             <img
               src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-log-out-img.png"
               alt="nav logout"
               className="nav-bar-image"
-              onClick={onClickLogout}
             />
           </button>
         </div>
@@ -66,30 +72,13 @@ const Header = props => {
         <ul className="nav-menu-list-mobile">
           <li className="nav-menu-item-mobile">
             <Link to="/" className="nav-link">
-              <img
-                src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-home-icon.png"
-                alt="nav home"
-                className="nav-bar-image"
-              />
+              <AiFillHome />
             </Link>
           </li>
 
           <li className="nav-menu-item-mobile">
-            <Link to="/products" className="nav-link">
-              <img
-                src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-products-icon.png"
-                alt="nav products"
-                className="nav-bar-image"
-              />
-            </Link>
-          </li>
-          <li className="nav-menu-item-mobile">
-            <Link to="/cart" className="nav-link">
-              <img
-                src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-cart-icon.png"
-                alt="nav cart"
-                className="nav-bar-image"
-              />
+            <Link to="/jobs" className="nav-link">
+              <BsFillBriefcaseFill />
             </Link>
           </li>
         </ul>
@@ -99,3 +88,13 @@ const Header = props => {
 }
 
 export default withRouter(Header)
+
+// <li className="nav-menu-item-mobile">
+//   <Link to="/login" className="nav-link">
+//     <img
+//       src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-cart-icon.png"
+//       alt="nav cart"
+//       className="nav-bar-image"
+//     />
+//   </Link>
+// </li>

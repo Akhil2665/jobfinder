@@ -28,7 +28,7 @@ class JobItemDetails extends Component {
     skillData: {},
     lifeAtCompanydata: {},
     apiStatus: apiStatusConstants.initial,
-    similarJobssData: [],
+    similarJobsData: [],
   }
 
   componentDidMount() {

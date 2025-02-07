@@ -56,3 +56,13 @@
   justify-content: center;
   align-items: center;
 }
+.retry-button {
+  height: 30px;
+  width: 60px;
+  padding: 4px;
+  background-color: #4f46e5;
+  color: #f1f5f9;
+  border: none;
+  outline: none;
+  font-weight: 500;
+}
