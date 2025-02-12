@@ -1,5 +1,5 @@
 import {Link, withRouter} from 'react-router-dom'
-
+import {MdLogout} from 'react-icons/md'
 import {AiFillHome} from 'react-icons/ai'
 import {BsFillBriefcaseFill} from 'react-icons/bs'
 
@@ -47,7 +47,7 @@ const Header = props => {
           </button>
         </div>
       </div>
-      <div className="nav-menu-mobile">
+      <div className="nav-bar-mobile-logo-container">
         <Link to="/">
           <img
             className="website-logo"
@@ -68,6 +68,17 @@ const Header = props => {
             </Link>
           </li>
         </ul>
+        <button
+          type="button"
+          className="nav-mobile-btn"
+          onClick={onClickLogout}
+        >
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-log-out-img.png"
+            alt="nav logout"
+            className="nav-bar-image"
+          />
+        </button>
       </div>
     </nav>
   )
