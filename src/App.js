@@ -4,9 +4,6 @@ import LoginForm from './components/LoginForm'
 import Home from './components/Home'
 import Jobs from './components/Jobs'
 import JobItemDetails from './components/JobItemDetails'
-
-// import ProductItemDetails from './components/ProductItemDetails'
-
 import NotFound from './components/NotFound'
 import ProtectedRoute from './components/ProtectedRoute'
 

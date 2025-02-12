@@ -60,7 +60,7 @@ class Jobs extends Component {
 
     const profileResponse = await fetch(profileUrl, options)
 
-    if (!profileResponse.ok) {
+    if (profileResponse.ok) {
       const fetchedProfileData = await profileResponse.json()
       const updatedProfileData = this.getUpdatedProfileData(
         fetchedProfileData.profile_details,
@@ -101,27 +101,7 @@ class Jobs extends Component {
     }
     const response = await fetch(apiUrl, options)
 
-    // const profileUrl = 'https://apis.ccbp.in/profile'
-
-    // const profileResponse = await fetch(profileUrl, options)
-
-    // if (profileResponse.ok) {
-    //   const fetchedProfileData = await profileResponse.json()
-    //   const updatedProfileData = this.getUpdatedProfileData(
-    //     fetchedProfileData.profile_details,
-    //   )
-    //   this.setState({
-    //     profileDetails: updatedProfileData,
-    //     profileApiStatus: profileApiStatusConstants.success,
-    //   })
-    // } else {
-    //   this.setState({
-    //     profileDetails: {},
-    //     profileApiStatus: profileApiStatusConstants.failure,
-    //   })
-    // }
-
-    if (response.ok) {
+    if (!response.ok) {
       const fetchedData = await response.json()
       const updatedData = fetchedData.jobs.map(jobObject => ({
         companyLogoUrl: jobObject.company_logo_url,
@@ -158,7 +138,12 @@ class Jobs extends Component {
         We cannot seem to find the page you are looking for
       </p>
       <Link to="/jobs">
-        <button type="button" className="retry-button" data-testid="retry">
+        <button
+          type="button"
+          className="retry-button"
+          data-testid="retry"
+          onClick={this.getJobs}
+        >
           Retry
         </button>
       </Link>
@@ -303,7 +288,6 @@ class Jobs extends Component {
 
   renderProfileFailureView = () => (
     <div className="profile-failure-view-container">
-      <p>renderProfileFailureView not displaying</p>
       <button
         type="button"
         className="retry-button"
@@ -330,15 +314,12 @@ class Jobs extends Component {
     }
   }
 
-  renderSidebar = () => {
-    const {profileDetails} = this.state
-    return (
-      <>
-        <ProfileCard profileDetails={profileDetails} />
-        {this.renderFilterGroup()}
-      </>
-    )
-  }
+  renderSidebar = () => (
+    <>
+      {this.renderProfileCard()}
+      {this.renderFilterGroup()}
+    </>
+  )
 
   render() {
     return (

@@ -10,6 +10,9 @@
   display: flex;
   flex-direction: row;
   padding: 24px;
+  margin: 20px;
+  width: 100%;
+  min-height: 90vh;
 }
 .app-side-bar {
   width: 30%;
@@ -68,9 +71,22 @@
 }
 
 .profile-failure-view-container {
-  background-color: #000000;
-  height: 60px;
+  background-color: #2c364c;
+  height: 180px;
   color: #000000;
   font-size: 26px;
-  width: 60px;
+  width: 340px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.profile-failure-view-container .profile-card {
+  background-image: url('https://assets.ccbp.in/frontend/react-js/profile-bg.png');
+  background-size: cover;
+  height: 180px;
+  width: 280px;
+  padding: 24px;
+  border-radius: 8%;
 }
