@@ -1,5 +1,5 @@
 import {Component} from 'react'
-import {Link} from 'react-router-dom'
+
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 import {BsSearch} from 'react-icons/bs'
@@ -44,6 +44,8 @@ class Jobs extends Component {
   }
 
   getProfileData = async () => {
+    console.log('2nd time')
+
     this.setState({
       profileApiStatus: profileApiStatusConstants.inProgress,
     })
@@ -56,6 +58,7 @@ class Jobs extends Component {
       },
       method: 'GET',
     }
+
     const profileUrl = 'https://apis.ccbp.in/profile'
 
     const profileResponse = await fetch(profileUrl, options)
@@ -86,7 +89,6 @@ class Jobs extends Component {
   getJobs = async () => {
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
-      profileApiStatus: profileApiStatusConstants.inProgress,
     })
     const jwtToken = Cookies.get('jwt_token')
     const {activeJobType, activeSalaryRange, searchInput} = this.state
@@ -130,23 +132,26 @@ class Jobs extends Component {
         src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
         alt="failure view"
         className="products-failure-img"
+        data-testid="failureViewImage"
       />
-      <h1 className="product-failure-heading-text">
+      <h1 className="product-failure-heading-text" data-testid="failureHeading">
         Oops! Something Went Wrong
       </h1>
-      <p className="products-failure-description">
+      <p
+        className="products-failure-description"
+        data-testid="failureDescription"
+      >
         We cannot seem to find the page you are looking for
       </p>
-      <Link to="/jobs">
-        <button
-          type="button"
-          className="retry-button"
-          data-testid="retry"
-          onClick={this.getJobs}
-        >
-          Retry
-        </button>
-      </Link>
+
+      <button
+        type="button"
+        className="retry-button"
+        data-testid="retry"
+        onClick={this.getJobs}
+      >
+        Retry
+      </button>
     </div>
   )
 
@@ -301,6 +306,7 @@ class Jobs extends Component {
 
   renderProfileCard = () => {
     const {profileApiStatus} = this.state
+
     console.log(profileApiStatus)
     switch (profileApiStatus) {
       case profileApiStatusConstants.success:
@@ -314,19 +320,22 @@ class Jobs extends Component {
     }
   }
 
-  renderSidebar = () => (
-    <>
-      {this.renderProfileCard()}
-      {this.renderFilterGroup()}
-    </>
-  )
+  // renderSidebar = () => (
+  //   <>
+  //     {this.renderProfileCard()}
+  //     {this.renderFilterGroup()}
+  //   </>
+  // )
 
   render() {
     return (
       <div className="all-jobs-section">
         <Header />
         <div className="jobs-main-container">
-          <div className="app-side-bar">{this.renderSidebar()}</div>
+          <div className="app-side-bar">
+            {this.renderProfileCard()}
+            {this.renderFilterGroup()}
+          </div>
           <div className="job-content-container">
             {this.renderInputSearchElement()}
             {this.renderAllJobs()}

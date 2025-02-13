@@ -3,7 +3,7 @@ import './index.css'
 const ProfileCard = props => {
   const {profileDetails} = props
   const {shortBio, profileImageUrl, name} = profileDetails
-  console.log(profileImageUrl)
+
   return (
     <div className="profile-card">
       <div className="profile-container">
