@@ -6,8 +6,9 @@
   width: 80%;
 }
 .company-image {
-  height: 300px;
-  width: 400px;
+  height: 400px;
+  width: 460px;
+  border-radius: 10px;
 }
 .life-at-comapny-container {
   display: flex;
@@ -21,6 +22,7 @@
 }
 .job-details-success-view {
   background-color: black;
+  color: #f1f5f9;
   min-height: 100vh;
   width: 100%;
   display: flex;

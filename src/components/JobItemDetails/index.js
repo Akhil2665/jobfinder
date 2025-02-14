@@ -93,8 +93,7 @@ class JobItemDetails extends Component {
         skillData: updatedSkillData,
         lifeAtCompanydata: lifeAtCompanyUpdateddata,
       })
-    }
-    if (response.status === 404) {
+    } else {
       this.setState({
         apiStatus: apiStatusConstants.failure,
       })
@@ -115,9 +114,11 @@ class JobItemDetails extends Component {
         className="error-view-image"
       />
       <h1 className="job-not-found-heading">Oops! Something Went Wrong</h1>
-      <p>We cannot seem to find the page you are looking for.</p>
+      <p className="products-failure-description">
+        We cannot seem to find the page you are looking for
+      </p>
       <Link to="/jobs">
-        <button type="button" className="button">
+        <button type="button" className="button" onClick={this.getJobData}>
           Retry
         </button>
       </Link>
