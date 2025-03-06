@@ -6,15 +6,12 @@
   width: 80%;
 }
 .company-image {
-  height: 400px;
-  width: 460px;
+  height: 200px;
+  width: 100%;
   border-radius: 10px;
 }
-.life-at-comapny-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
+
+
 .similar-jobs-list {
   list-style-type: none;
   display: flex;
@@ -48,4 +45,33 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+.life-at-comapny-container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+}
+.description-company-life {
+  width: 100%;
+  font-size: 18px;
+}
+
+@media (min-width: 768px){
+  .life-at-comapny-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .company-image {
+    height: 360px;
+    width: 40%;
+    border-radius: 10px;
+  }
+
+  .description-company-life {
+    width: 54%;
+    font-size:28px;
+
+  }
 }

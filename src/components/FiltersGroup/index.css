@@ -1,3 +1,6 @@
 .filter-list-container {
   list-style-type: none;
 }
+.filter-heading {
+  font-size: 24px;
+}
