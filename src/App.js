@@ -50,11 +50,11 @@ const salaryRangesList = [
 const App = () => (
   <>
     <Switch>
-      <Route exact path='/login' component={LoginForm} />
-      <ProtectedRoute exact path='/' component={Home} />
+      <Route exact path="/login" component={LoginForm} />
+      <ProtectedRoute exact path="/" component={Home} />
       <ProtectedRoute
         exact
-        path='/jobs'
+        path="/jobs"
         render={props => (
           <Jobs
             {...props}
@@ -63,9 +63,9 @@ const App = () => (
           />
         )}
       />
-      <ProtectedRoute exact path='/jobs/:id' component={JobItemDetails} />
-      <Route path='/not-found' component={NotFound} />
-      <Redirect to='not-found' />
+      <ProtectedRoute exact path="/jobs/:id" component={JobItemDetails} />
+      <Route path="/not-found" component={NotFound} />
+      <Redirect to="/not-found" />
     </Switch>
   </>
 )
